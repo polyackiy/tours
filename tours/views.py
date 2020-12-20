@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponseNotFound
+from django.http import HttpResponse
 
 
 # View for main page
@@ -22,4 +23,4 @@ def custom_handler404(request, exception):
 
 
 def custom_handler500(request):
-    return HttpResponseNotFound('Что-то не так. \nКоманда обученных обезьян была отправлена, чтобы разобраться.')
+    return HttpResponse('Что-то не так. \nКоманда обученных обезьян была отправлена, чтобы разобраться.', status=500)
