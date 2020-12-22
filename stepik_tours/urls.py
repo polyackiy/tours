@@ -23,7 +23,7 @@ from tours.views import custom_handler404
 from tours.views import custom_handler500
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('/admin/', admin.site.urls),
     path('', main_view, name='main'),
     path('departure/<str:departure>/', departure_view, name='departure'),
     path('tour/<int:id>/', tour_view, name='tour'),
