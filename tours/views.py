@@ -1,17 +1,17 @@
 from django.shortcuts import render
-from django.http import HttpResponseNotFound
+from django.http import HttpResponseNotFound, Http404
 from django.http import HttpResponse
+import logging
 
 import tours.data as data
 
 
-# View for main page Потом надо удалиь лишние
+# View for main page
+# TODO: доработать вывод 6 случайных туров
 def main_view(request):
     return render(request, "index.html", {
-        'title': data.title,
         'subtitle': data.subtitle,
         'description': data.description,
-        'departures': data.departures,
         'tours': data.tours,
     })
 
@@ -27,19 +27,21 @@ def departure_view(request, departure):
     })
 
 
-
 # View for tours
 def tour_view(request, id):
+    if id not in data.tours:
+        raise Http404
+
+    tour = data.tours.get(id)
     return render(request, "tours/tour.html", {
-        'title': data.title,
-        'subtitle': data.subtitle,
-        'description': data.description,
-        'departures': data.departures,
-        'tours': data.tours,
+        'tour': tour,
+        'stars': range(int(tour['stars'])),
+        'departure': data.departures.get(tour['departure'])
     })
 
 
 def custom_handler404(request, exception):
+    logging.warning(f'Non-existent tour was requested {exception}')
     return HttpResponseNotFound('Кажется такая страница не существует :(')
 
 
